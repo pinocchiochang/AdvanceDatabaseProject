@@ -1,0 +1,45 @@
+// Test 7
+// T4 waits for at least one up site. T4 aborts because site 2 fails after its touch.
+// all others ok.
+begin(T1)
+begin(T2)
+beginRO(T3)
+
+
+fail(1)
+fail(3)
+W(T2, x3, 10)
+fail(4)
+R(T1, x2)
+R(T2, x2)
+W(T1, x2, 10)
+end(T2)
+recover(4)
+
+R(T1, x3)
+R(T3, x3)
+end(T1)
+end(T3)
+
+
+begin(T4)
+begin(T5)
+beginRO(T6)
+fail(2);fail(4);fail(5);fail(6);fail(7);fail(8);fail(9);fail(10)
+recover(2)
+R(T4, x2)
+W(T5, x2, 100)
+end(T5)
+R(T4, x1)
+recover(4);fail(2)
+
+end(T4)
+begin(T7)
+R(T6, x4)
+W(T7, x4, 75)
+end(T7)
+end(T6)
+
+
+
+
